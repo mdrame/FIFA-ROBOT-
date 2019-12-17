@@ -1,3 +1,5 @@
+import http.client
+import json
 import requests
 from django.shortcuts import render
 from django.views.generic.list import ListView
@@ -34,11 +36,20 @@ class HomePageView(ListView):
 
         return data
 
+    def football_data_api(self):
+        connection = http.client.HTTPConnection('api.football-data.org')
+        headers = { 'X-Auth-Token': '1e133e76dd1f4262a3c4a56dc713352b' }
+
+        connection.request('GET', '/v2/teams/67/matches?status=FINISHED&limit=1', None, headers )
+        response = json.loads(connection.getresponse().read().decode())
+
+        return response
+
     def get(self, request):
         """ GET a list of Teams. """
         # teams = self.get_queryset().all()
 
-        teams = self.getFederations()
+        teams = self.football_data_api()
         print("__________________")
         print(teams)
         print("__________________")
