@@ -5,10 +5,9 @@
   <hr>
   {% if teams %}
     <div class="card-columns">
-      {% for team in teams %}
-        <!-- {% include "partials/card.html" %} -->
-        <h1>{{team}}</h1>
-      {% endfor %}
+      <!-- {% for team in teams %} -->
+        <small>{{teams}}</small>
+      <!-- {% endfor %} -->
     </div>
   {% else %}
     <div class="alert alert-primary" role="alert">No pages to display.</div>

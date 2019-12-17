@@ -25,7 +25,7 @@ SECRET_KEY = 'o$6!4&$*lkmtq6lubv+1bavq6^u%izmcu&mcfs*o0z9uk18-e7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-  ALLOWED_HOSTS = ['localhost', 'sportsbook.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'sportsbook.herokuapp.com']
 
 
 # Application definition
@@ -133,4 +133,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, ‘static’)
+STATIC_ROOT = os.path.join(BASE_DIR, "static")

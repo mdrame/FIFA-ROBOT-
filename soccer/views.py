@@ -30,17 +30,18 @@ class HomePageView(ListView):
         response = requests.request("GET", url, headers=headers, params=querystring)
 
         data = response.text
-        print("__________________")
-        print(data)
-        print("__________________")
 
+
+        return data
 
     def get(self, request):
         """ GET a list of Teams. """
         # teams = self.get_queryset().all()
 
         teams = self.getFederations()
-
+        print("__________________")
+        print(teams)
+        print("__________________")
         return render(request, 'index.html', {
           'teams': teams
         })
