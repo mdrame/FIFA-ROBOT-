@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h3>Teams {% if teams %}<small class="text-muted">({{ teams|length }} Team{{ teams|length|pluralize:"s" }})</small>{% endif %}</h3>
+  <hr>
+  {% if teams %}
+    <div class="card-columns">
+      {% for team in teams %}
+        <!-- {% include "partials/card.html" %} -->
+        <h1>{{team}}</h1>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-primary" role="alert">No pages to display.</div>
+  {% endif %}
+{% endblock %}
