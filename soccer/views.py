@@ -11,7 +11,7 @@ from soccer.models import Team
 
 
 class HomePageView(ListView):
-    """ Renders a list of all Pages. """
+    """ Renders a list of all Teams. """
     model = Team
 
     def getFederations(self):
@@ -45,3 +45,14 @@ class HomePageView(ListView):
         return render(request, 'index.html', {
           'teams': teams
         })
+
+
+class DetailPageView(DetailView):
+    """ Renders a single team. """
+    model = Team
+
+    def get(self, request, team_name):
+        # olive = OliveOil.objects.get(pk=olive_id)
+        team = team_name
+
+        return render(request, 'detail.html', {'team': team_name})

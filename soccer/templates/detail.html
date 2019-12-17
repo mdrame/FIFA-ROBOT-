@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Display Game Stats here</h1>
+<small>Use API</small>
+<hr style="border: 1px solid black;">
+{% if team %}
+  <h2 class="mt-5">{{team}}</h2>
+{% else %}
+  <small>No team is availabe</small>
+{% endif %}
+
+{% endblock %}
