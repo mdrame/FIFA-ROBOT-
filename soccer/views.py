@@ -16,8 +16,7 @@ class HomePageView(ListView):
     """ Renders a list of all Teams. """
     model = Team
 
-    def getFederations(self):
-
+    def footballprediction(self):
         # url = "https://football-prediction-api.p.rapidapi.com/api/v2/performance-stats"
         url = "https://football-prediction-api.p.rapidapi.com/api/v2/list-federations"
 
