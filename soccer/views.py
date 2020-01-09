@@ -34,7 +34,7 @@ class HomePageView(ListView):
         dt = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
         return api_tz.localize(dt).astimezone(local_tz)
 
-    def footballprediction(self):
+    def get_fixtures_from_api(self):
         # this is a datetime object with the timezone used by our api
         current_server_time = self.get_current_datetime_on_api_server()
 
@@ -64,7 +64,9 @@ class HomePageView(ListView):
             fixtures = data["fixtures"]
 
             for fixture in fixtures:
+                # date = self.to_local_datetime(fixture["event_date"])
                 match = {
+                    "fixtureId": fixture["fixture_id"],
                     "date": fixture["event_date"],
                     "league": fixture["league"]["name"],
                     "country": fixture["league"]["country"],
@@ -78,29 +80,21 @@ class HomePageView(ListView):
                 }
                 matches.append(match)
 
-
-
         # print(response.text)
 
         return matches
 
-    def football_data_api(self):
-        connection = http.client.HTTPConnection('api.football-data.org')
-        headers = { 'X-Auth-Token': '1e133e76dd1f4262a3c4a56dc713352b' }
 
-        connection.request('GET', '/v2/teams/67/matches?status=FINISHED&limit=1', None, headers )
-        response = json.loads(connection.getresponse().read().decode())
-
-        return response
 
     def get(self, request):
         """ GET a list of Teams. """
-        matches = self.footballprediction()
+        matches = self.get_fixtures_from_api()
+        # matches = {
+        #     'fixture_id':12344
+        # }
         # teams = ''
         # teams = self.football_data_api()
-        print("__________________")
-        print(matches)
-        print("__________________")
+
         return render(request, 'index.html', {
           'matches': matches
         })
@@ -110,8 +104,45 @@ class DetailPageView(DetailView):
     """ Renders a single team. """
     model = Team
 
-    def get(self, request, team_name):
-        # olive = OliveOil.objects.get(pk=olive_id)
-        team = team_name
 
-        return render(request, 'detail.html', {'team': team_name})
+    def get_predictions_api(self, fixture_id):
+        url = "https://api-football-v1.p.rapidapi.com/v2/predictions/"+str(fixture_id)
+
+        headers = {
+            'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
+            'x-rapidapi-key': "b04c542bd7mshf4fe4d9539e1dd8p1a9f38jsncddc8a3a9c2a"
+            }
+
+        response = requests.request("GET", url, headers=headers)
+
+        matchPrediction = {}
+
+        if response.ok:
+            json = response.json()
+
+            data = json["api"]
+            predictions = data["predictions"]
+
+            for prediction in predictions:
+                # date = self.to_local_datetime(fixture["event_date"])
+                matchPrediction = {
+                    "home_team": prediction["teams"]["home"]["team_name"],
+                    "away_team": prediction["teams"]["away"]["team_name"],
+                    "advice": prediction["advice"],
+                    "home_winning_per": prediction["comparison"]["forme"]["home"],
+                    "away_winning_per": prediction["comparison"]["forme"]["away"],
+
+                    "home_win": prediction["winning_percent"]["home"],
+                    "away_win": prediction["winning_percent"]["away"],
+                    "draw_win": prediction["winning_percent"]["draws"],
+                }
+
+        # print(response.text)
+
+        return matchPrediction
+
+    def get(self, request, fixtureId):
+        prediction = self.get_predictions_api(fixtureId)
+
+
+        return render(request, 'detail.html', {'prediction': prediction})

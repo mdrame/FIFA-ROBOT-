@@ -24,7 +24,7 @@
         <p class="card-text">Leugue: {{ match.league }}</p>
         <p class="card-text">Round: {{ match.round }}</p>
         <p class="card-text">Venue: {{ match.venue }}</p>
-        <a href="#" class="btn btn-primary">Get Prediction</a>
+        <a href="{% url 'soccer:detail' match.fixtureId %}" class="btn btn-primary">Get Prediction</a>
       </div>
     </div>
     {% endfor %}
