@@ -137,12 +137,31 @@ class DetailPageView(DetailView):
                     "draw_win": prediction["winning_percent"]["draws"],
                 }
 
+            headToHead = prediction["h2h"]
+
+            allMatches = []
+            for match in headToHead:
+                game = {
+                    "date": match["event_date"],
+                    "home_team": match["homeTeam"]["team_name"],
+                    "away_team": match["awayTeam"]["team_name"],
+                    "home_goal": match["goalsHomeTeam"],
+                    "away_goal": match["goalsAwayTeam"],
+                    "status": match["status"],
+                    "home_logo": match["homeTeam"]["logo"],
+                    "away_logo": match["awayTeam"]["logo"],
+                }
+                allMatches.append(game)
+
+
         # print(response.text)
 
-        return matchPrediction
+        return [matchPrediction, allMatches]
 
     def get(self, request, fixtureId):
-        prediction = self.get_predictions_api(fixtureId)
-
-
-        return render(request, 'detail.html', {'prediction': prediction})
+        results = self.get_predictions_api(fixtureId)
+        prediction = results[0]
+        matches = results[1]
+        home_logo = matches[0]["home_logo"]
+        away_logo = matches[0]["away_logo"]
+        return render(request, 'detail.html', {'prediction': prediction, 'matches': matches, "home_logo": home_logo, "away_logo": away_logo})

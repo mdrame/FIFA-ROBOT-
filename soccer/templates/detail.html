@@ -4,18 +4,18 @@
 
 <div class="container">
   <div class="row  justify-content-center">
-
+    {% if prediction %}
 
     <div class="column m-5">
       <div class="card" style="width: 18rem;">
 
         <div class="row">
-          <!-- <div class="col-sm-6">
-            <img class="card-img-top" src="{{match.home_logo}}" alt="Card image cap" width="48%">
+          <div class="col-sm-6">
+            <img class="card-img-top" src="{{away_logo}}" alt="Card image cap" width="48%">
           </div>
           <div class="col-sm-6 float-right">
-            <img class="card-img-top" src="{{match.away_logo}}" alt="Card image cap" width="48%">
-          </div> -->
+            <img class="card-img-top" src="{{home_logo}}" alt="Card image cap" width="48%">
+          </div>
         </div>
         <div class="card-body">
           <h5 class="card-title">{{prediction.home_team}} vs {{prediction.away_team}}</h5>
@@ -24,28 +24,49 @@
           <p class="card-text bg-success p-3 text-white">Advice: {{prediction.advice}}</p>
         </div>
       </div>
-
-
-      {% if prediction %}
-      <p></p>
-      <p></p>
-      <p></p>
-
     </div>
 
-    <div class="row">
-      <div id="piechart"></div>
-    </div>
-    <br>
-    <!-- <div class="row"> -->
-      <div id="chartContainer" style="height: 300px; width: 80%;"></div>
+    <!-- comparison pie chart -->
+    <!-- <div class="container w-auto"> -->
+      <div class="row justify-content-center">
+        <div class="m-0" id="piechart"></div>
+      </div>
     <!-- </div> -->
 
+    <!-- <br> -->
+
+    <!-- winning percent chart -->
+    <div id="chartContainer" style="height: 300px; width: 80%;"></div>
+
+    <h3 class="pt-5 m-5">Head to Head Matches</h3>
+    <table class="table table-hover" style="width:80%;">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Home</th>
+          <th scope="col">Score</th>
+          <th scope="col">Away</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for match in matches %}
+        <tr>
+          <th scope="row">{{ match.date }}</th>
+          <td>{{match.home_team}}</td>
+          <td>{{match.home_goal}}-{{match.away_goal}}</td>
+          <td>{{match.away_team}}</td>
+          <td>{{match.status}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
 
     {% else %}
     <small>No team is availabe</small>
     {% endif %}
+    <br>
 
 
   </div>
@@ -75,7 +96,7 @@
     ]);
 
     // Optional; add a title and set the width and height of the chart
-    var options = {'title':'Comparison', 'width':550, 'height':400};
+    var options = {'title':'Team Comparison ', 'width':550, 'height':400};
 
     // Display the chart inside the <div> element with id="piechart"
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -98,28 +119,28 @@
 
 
   var options = {
-  	animationEnabled: true,
+    animationEnabled: true,
     theme: "light2",
-  	title: {
-  		text: "Winning Percent"
-  	},
-  	axisY: {
-  		title: "Win Rate (in %)",
-  		suffix: "%",
-  		includeZero: false
-  	},
-  	axisX: {
-  		title: " "
-  	},
-  	data: [{
-  		type: "column",
-  		yValueFormatString: "#,##0.0#"%"",
-  		dataPoints: [
-  			{ label: "{{prediction.home_team}}", y: homeWinPercent },
-  			{ label: "Draw", y: drawWinPercent },
-  			{ label: "{{prediction.away_team}}", y: awayWinPercent },
-  		]
-  	}]
+    title: {
+      text: "Winning Percent"
+    },
+    axisY: {
+      title: "Win Rate (in %)",
+      suffix: "%",
+      includeZero: false
+    },
+    axisX: {
+      title: " "
+    },
+    data: [{
+      type: "column",
+      yValueFormatString: "#,##0.0#"%"",
+      dataPoints: [
+      { label: "{{prediction.home_team}}", y: homeWinPercent },
+      { label: "Draw", y: drawWinPercent },
+      { label: "{{prediction.away_team}}", y: awayWinPercent },
+      ]
+    }]
   };
   $("#chartContainer").CanvasJSChart(options);
 </script>
