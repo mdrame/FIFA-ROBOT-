@@ -10,8 +10,6 @@ class Team(models.Model):
     """ Represents a single wiki page. """
     name = models.CharField(unique=True, help_text="Team name", max_length=1000)
 
-
-
     def __str__(self):
         return self.name
 

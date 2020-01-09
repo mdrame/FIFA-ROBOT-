@@ -11,29 +11,78 @@ from django.http import HttpResponseRedirect
 
 from soccer.models import Team
 
+from datetime import datetime, timedelta, timezone
+import os
+
+import pytz
 
 class HomePageView(ListView):
     """ Renders a list of all Teams. """
     model = Team
 
-    def footballprediction(self):
-        # url = "https://football-prediction-api.p.rapidapi.com/api/v2/performance-stats"
-        url = "https://football-prediction-api.p.rapidapi.com/api/v2/list-federations"
+    def get_current_datetime_on_api_server(self):
+        api_tz = pytz.timezone("Europe/London")
 
-        querystring = {"market":"classic"}
+        london_time = datetime.now(tz=timezone.utc).astimezone(api_tz)
+        return london_time
+
+    def to_local_datetime(self, start_date):
+        # Change this to your timezone
+        local_tz = pytz.timezone("Europe/Rome")
+        api_tz = pytz.timezone("Europe/London")
+
+        dt = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
+        return api_tz.localize(dt).astimezone(local_tz)
+
+    def footballprediction(self):
+        # this is a datetime object with the timezone used by our api
+        current_server_time = self.get_current_datetime_on_api_server()
+
+        # obtaining the next day as python date object
+        tomorrow = current_server_time.date() + timedelta(days=1)
+
+        # today date
+        today = current_server_time.date()
+
+
+        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/date/"+str(today)
+
+        querystring = {"timezone":"Europe/London"}
 
         headers = {
-            'x-rapidapi-host': "football-prediction-api.p.rapidapi.com",
+            'x-rapidapi-host': "api-football-v1.p.rapidapi.com",
             'x-rapidapi-key': "b04c542bd7mshf4fe4d9539e1dd8p1a9f38jsncddc8a3a9c2a"
             }
 
-        # response = requests.request("GET", url, headers=headers, params=querystring)
         response = requests.request("GET", url, headers=headers, params=querystring)
+        matches = []
 
-        data = response.text
+        if response.ok:
+            json = response.json()
+
+            data = json["api"]
+            fixtures = data["fixtures"]
+
+            for fixture in fixtures:
+                match = {
+                    "date": fixture["event_date"],
+                    "league": fixture["league"]["name"],
+                    "country": fixture["league"]["country"],
+                    "round": fixture["round"],
+                    "home_team": fixture["homeTeam"]["team_name"],
+                    "away_team": fixture["awayTeam"]["team_name"],
+                    "status": fixture["status"],
+                    "venue": fixture["venue"],
+                    "home_logo": fixture["homeTeam"]["logo"],
+                    "away_logo": fixture["awayTeam"]["logo"],
+                }
+                matches.append(match)
 
 
-        return data
+
+        # print(response.text)
+
+        return matches
 
     def football_data_api(self):
         connection = http.client.HTTPConnection('api.football-data.org')
@@ -46,14 +95,14 @@ class HomePageView(ListView):
 
     def get(self, request):
         """ GET a list of Teams. """
-        # teams = self.get_queryset().all()
-
-        teams = self.football_data_api()
+        matches = self.footballprediction()
+        # teams = ''
+        # teams = self.football_data_api()
         print("__________________")
-        print(teams)
+        print(matches)
         print("__________________")
         return render(request, 'index.html', {
-          'teams': teams
+          'matches': matches
         })
 
 

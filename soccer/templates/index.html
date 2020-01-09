@@ -1,11 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h3>Teams {% if teams %}<small class="text-muted">({{ teams|length }} Team{{ teams|length|pluralize:"s" }})</small>{% endif %}</h3>
+  <h3>Matches {% if teams %}<small class="text-muted">({{ teams|length }} Team{{ teams|length|pluralize:"s" }})</small>{% endif %}</h3>
   <hr>
-  {% if teams %}
-    <div class="card-columns">
-      {{teams}}
+  {% if matches %}
+  <div class="card-columns">
+    <!-- <p>{{matches}}</p> -->
+    {% for match in matches %}
+    <div class="card" style="width: 18rem;">
+
+    <div class="row">
+      <div class="col-sm-6">
+        <img class="card-img-top" src="{{match.home_logo}}" alt="Card image cap" width="48%">
+      </div>
+      <div class="col-sm-6 float-right">
+        <img class="card-img-top" src="{{match.away_logo}}" alt="Card image cap" width="48%">
+      </div>
+    </div>
+      <div class="card-body">
+        <span class="caption">{{ match.date }} | {{match.status}}</span>
+        <h5 class="card-title">{{ match.home_team }} vs {{ match.away_team }}</h5>
+        <p class="card-text">Country: {{match.country}} </p>
+        <p class="card-text">Leugue: {{ match.league }}</p>
+        <p class="card-text">Round: {{ match.round }}</p>
+        <p class="card-text">Venue: {{ match.venue }}</p>
+        <a href="#" class="btn btn-primary">Get Prediction</a>
+      </div>
+    </div>
+    {% endfor %}
     </div>
   {% else %}
     <div class="alert alert-primary" role="alert">No pages to display.</div>
