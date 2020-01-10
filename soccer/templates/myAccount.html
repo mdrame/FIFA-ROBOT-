@@ -9,7 +9,7 @@
 
   {% for match in matches %}
 
-  <div class="card mt-5" style="width: 18rem;">
+  <div class="card mt-5" style="width: 22rem;">
 
     <div class="row">
       <div class="col-sm-6">
@@ -28,7 +28,7 @@
       <p class="card-text">Venue: {{ match.venue }}</p>
       <a href="{% url 'soccer:detail' match.fixtureId %}" class="btn btn-primary float-left mr-4">Prediction</a>
       {% if user.is_authenticated %}
-      <form action="{% url 'soccer:savematch' match.fixtureId %}" class="" method="post">
+      <form action="{% url 'soccer:deletematch' match.fixtureId %}" class="" method="post">
         {% csrf_token %}
         <input type="hidden" name="" value="{{match.fixtureId}}">
         <input class="btn btn-danger" type="submit" value="Delete Match">

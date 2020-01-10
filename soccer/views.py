@@ -256,3 +256,7 @@ def saveMatch(request, fixtureId):
 #     # with POST data. This prevents data from being posted twice if a
 #     # user hits the Back button.
     return HttpResponseRedirect(reverse('soccer:myaccount'))
+
+def deleteMatch(request, fixtureId):
+    match = Match.objects.filter(fixture_id=fixtureId).delete()
+    return HttpResponseRedirect(reverse('soccer:myaccount'))
