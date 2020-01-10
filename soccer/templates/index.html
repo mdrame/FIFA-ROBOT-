@@ -1,30 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>Matches {% if teams %}<small class="text-muted">({{ teams|length }} Team{{ teams|length|pluralize:"s" }})</small>{% endif %}</h3>
+<!-- show total matches  -->
+<h3>Matches {% if matches %}<small class="text-muted">({{ matches|length }} Match{{ matches|length|pluralize:"s" }})</small>{% endif %}</h3>
 <hr>
 {% if matches %}
 <div class="card-columns">
-  <!-- <p>{{matches}}</p> -->
+  <!-- loop every single match -->
   {% for match in matches %}
+  <!-- create a card for each match -->
   <div class="card" style="width: 22rem;">
-
+    <!-- image row -->
     <div class="row">
+      <!-- display team logos side to side -->
       <div class="col-sm-6">
-        <img class="card-img-top" src="{{match.home_logo}}" alt="Card image cap" width="48%">
+        <a href="{% url 'soccer:detail' match.fixtureId %}"><img class="card-img-top" src="{{match.home_logo}}" alt="Card image cap" width="48%"></a>
       </div>
       <div class="col-sm-6 float-right">
-        <img class="card-img-top" src="{{match.away_logo}}" alt="Card image cap" width="48%">
+        <a href="{% url 'soccer:detail' match.fixtureId %}"><img class="card-img-top" src="{{match.away_logo}}" alt="Card image cap" width="48%"></a>
       </div>
     </div>
+    <!-- end of team logos -->
+    <!-- display match stats in card body -->
     <div class="card-body">
       <span class="caption">{{ match.date }} | {{match.status}}</span>
-      <h5 class="card-title">{{ match.home_team }} vs {{ match.away_team }}</h5>
+      <h5 class="card-title"><a href="{% url 'soccer:detail' match.fixtureId %}">{{ match.home_team }} vs {{ match.away_team }}</a></h5>
       <p class="card-text">Country: {{match.country}} </p>
       <p class="card-text">Leugue: {{ match.league }}</p>
       <p class="card-text">Round: {{ match.round }}</p>
       <p class="card-text">Venue: {{ match.venue }}</p>
       <a href="{% url 'soccer:detail' match.fixtureId %}" class="btn btn-primary float-left mr-3">Prediction</a>
+      <!-- check if user is logged in, allow to save or go to log in -->
       {% if user.is_authenticated %}
       <form class="" action="{% url 'soccer:savematch' match.fixtureId %}" class="" method="post">
         {% csrf_token %}
@@ -35,10 +41,14 @@
         <a href="{% url 'login' %}" class="btn btn-secondary ml-2">Log In to Save</a>
       {% endif %}
     </div>
+    <!-- end of card body -->
   </div>
+  <!-- end of card -->
   {% endfor %}
 </div>
+<!-- end of card list -->
 {% else %}
+<!-- error message when no matches availabe -->
 <div class="alert alert-primary" role="alert">No pages to display.</div>
 {% endif %}
 {% endblock %}

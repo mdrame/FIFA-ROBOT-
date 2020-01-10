@@ -1,22 +1,29 @@
 
 # [Sports Book Live](https://sportanalyst.herokuapp.com/)
 
+## Description:
+Sports Book is software that allows you to browse today's football games and track them under your account.
+
+## Function:
+- Account login & sign up
+- Today's football matches
+- Match predictions
+- Save/delete match/s
+- View saved matches
+
 ## Pages:
   1. Home page
   2. Detail page
+  3. myAccount page
+
+## Tech stack:
+  - Python
+  - Django
+  - Javascript
+  - HTML, CSS
 
 ## Resources:
-  - [Fantasy NFL API](https://api.fantasy.nfl.com/)
-  - [Soccer APIs](https://www.jokecamp.com/blog/guide-to-football-and-soccer-data-and-apis/)
-  - [Sport APIs](https://rapidapi.com/api-sports/api/api-football?utm_source=google&utm_medium=cpc&utm_campaign=1674315309_75114215228&utm_term=soccer%20api_p&utm_content=1t1&gclid=EAIaIQobChMIpZP4laut5gIVEarsCh2sJwgfEAAYASAAEgIlj_D_BwE)
-
-## TODO:
-1. Decide on which API to use (check for higher server requests limit)
-2. Define variables that will be used (Check Json response from APi)
-3. Pick graphs that will be used in the interface. [Bootstrap Graph](https://mdbootstrap.com/docs/jquery/javascript/charts/)
-
-## END GOAL:
-- Compare the winning matches for two teams based on the same teams the previously played
-- Rank players based on their contributions (shots, assists, corners...)
-- Compare team stats (wins/losses, players, injuries)
-- Generate a list of potentially winning teams
+  - [Football API](https://api-football-v1.p.rapidapi.com)
+  - [Google Chart](https://canvasjs.com/assets/script/jquery.canvasjs.min.js)
+  - [JS Chart](https://www.gstatic.com/charts/loader.js)
+  - [Bootstrap](https://getbootstrap.com/)

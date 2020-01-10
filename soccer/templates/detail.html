@@ -19,8 +19,8 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">{{prediction.home_team}} vs {{prediction.away_team}}</h5>
-          <p class="card-text">Home win: {{prediction.home_winning_per}}</p>
-          <p class="card-text">Away win: {{prediction.away_winning_per}}</p>
+          <p class="card-text"><strong>Home:</strong> <span style="color:blue">{{prediction.home_winning_per}}</span>
+                          |  <strong>Away:</strong> <span style="color:red">{{prediction.away_winning_per}}</span></p>
           <p class="card-text bg-success p-3 text-white">Advice: {{prediction.advice}}</p>
         </div>
       </div>

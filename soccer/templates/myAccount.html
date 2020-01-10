@@ -1,14 +1,18 @@
 {% extends "base.html" %}
-
 {% block content %}
+
 {% if user.is_authenticated %}
-
-
-<h2>Hello {{user.username}}! Welcome to your matches</h2>
+<!-- display user name and action button -->
+<div class="container">
+  <div class="row" class="justify-content-center">
+    <h2>Welcome back {{user.username}}! <a class="btn alert-success" href="{% url 'soccer:home' %}">Add Matches</a></h2>
+  </div>
+</div>
+<!-- display a list of cards -->
 <div class="card-columns">
-
-  {% for match in matches %}
-
+  {% if matches %} <!-- check if there is a match -->
+  {% for match in matches %} <!-- loop over matches -->
+  <!-- create a card for every match -->
   <div class="card mt-5" style="width: 22rem;">
 
     <div class="row">
@@ -37,11 +41,16 @@
 
     </div>
   </div>
-
+  <!-- end of card  -->
   {% endfor %}
+  {% else %}
+  <!-- show message for no matches -->
+  <div class="alert alert-primary" role="alert">You don't have any games saved! <a href="{% url 'soccer:home' %}">Go back</a></div>
+  {% endif %}
 </div>
 {% else %}
-<div class="alert alert-primary" role="alert">You are not logged in. Please log in to continue</div>
+<!-- error message when user is not logged in -->
+<div class="alert alert-primary" role="alert">You are not logged in. Please <a href="{% url 'login' %}">log in</a>to continue</div>
 {% endif %}
 
 {% endblock %}
