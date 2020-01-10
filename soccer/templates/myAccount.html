@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>Matches {% if teams %}<small class="text-muted">({{ teams|length }} Team{{ teams|length|pluralize:"s" }})</small>{% endif %}</h3>
-<hr>
-{% if matches %}
+{% if user.is_authenticated %}
+
+
+<h2>Hello {{user.username}}! Welcome to your matches</h2>
 <div class="card-columns">
-  <!-- <p>{{matches}}</p> -->
+
   {% for match in matches %}
-  <div class="card" style="width: 18rem;">
+
+  <div class="card mt-5" style="width: 18rem;">
 
     <div class="row">
       <div class="col-sm-6">
@@ -24,21 +26,22 @@
       <p class="card-text">Leugue: {{ match.league }}</p>
       <p class="card-text">Round: {{ match.round }}</p>
       <p class="card-text">Venue: {{ match.venue }}</p>
-      <a href="{% url 'soccer:detail' match.fixtureId %}" class="btn btn-primary float-left mr-3">Prediction</a>
+      <a href="{% url 'soccer:detail' match.fixtureId %}" class="btn btn-primary float-left mr-4">Prediction</a>
       {% if user.is_authenticated %}
-      <form class="" action="{% url 'soccer:savematch' match.fixtureId %}" class="" method="post">
+      <form action="{% url 'soccer:savematch' match.fixtureId %}" class="" method="post">
         {% csrf_token %}
         <input type="hidden" name="" value="{{match.fixtureId}}">
-        <input class="btn btn-success" type="submit" value="Save">
+        <input class="btn btn-danger" type="submit" value="Delete Match">
       </form>
-      {% else %}
-        <a href="{% url 'login' %}" class="btn btn-secondary ml-2">Log In to Save</a>
       {% endif %}
+
     </div>
   </div>
+
   {% endfor %}
 </div>
 {% else %}
-<div class="alert alert-primary" role="alert">No pages to display.</div>
+<div class="alert alert-primary" role="alert">You are not logged in. Please log in to continue</div>
 {% endif %}
+
 {% endblock %}

@@ -15,11 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     #admin site
     path('admin/', admin.site.urls),
 
+    path('accounts/', include('accounts.urls')), # accounts app
+    path('accounts/', include('django.contrib.auth.urls')), # for login and logout
+
     #soccer app
     path('', include('soccer.urls')),
+
+    # take user to home page after logout
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
+
 ]

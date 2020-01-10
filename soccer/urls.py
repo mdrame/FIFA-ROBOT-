@@ -1,10 +1,11 @@
 from django.urls import path
-from soccer.views import HomePageView, DetailPageView
+from soccer.views import HomePageView, DetailPageView, MyAccountPageView, saveMatch
 
 app_name = 'soccer'
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('<int:fixtureId>/', DetailPageView.as_view(), name='detail'),
-    # path('/new/', NewWikiView.as_view(), name='new-wiki'),
+    path('myaccount/', MyAccountPageView.as_view(), name='myaccount'),
+    path('<int:fixtureId>/savematch', saveMatch, name='savematch'),
 
 ]
