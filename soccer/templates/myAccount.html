@@ -17,15 +17,15 @@
 
     <div class="row">
       <div class="col-sm-6">
-        <img class="card-img-top" src="{{match.home_logo}}" alt="Card image cap" width="48%">
+        <a href="{% url 'soccer:detail' match.fixtureId %}"><img class="card-img-top" src="{{match.home_logo}}" alt="Card image cap" width="48%"></a>
       </div>
       <div class="col-sm-6 float-right">
-        <img class="card-img-top" src="{{match.away_logo}}" alt="Card image cap" width="48%">
+        <a href="{% url 'soccer:detail' match.fixtureId %}"><img class="card-img-top" src="{{match.away_logo}}" alt="Card image cap" width="48%"></a>
       </div>
     </div>
     <div class="card-body">
       <span class="caption">{{ match.date }} | {{match.status}}</span>
-      <h5 class="card-title">{{ match.home_team }} vs {{ match.away_team }}</h5>
+      <h5 class="card-title"><a href="{% url 'soccer:detail' match.fixtureId %}">{{ match.home_team }} vs {{ match.away_team }}</a></h5>
       <p class="card-text">Country: {{match.country}} </p>
       <p class="card-text">Leugue: {{ match.league }}</p>
       <p class="card-text">Round: {{ match.round }}</p>
