@@ -2,13 +2,147 @@
 
 {% block content %}
 
-<h1>Display Game Stats here</h1>
-<small>Use API</small>
-<hr style="border: 1px solid black;">
-{% if team %}
-  <h2 class="mt-5">{{team}}</h2>
-{% else %}
-  <small>No team is availabe</small>
-{% endif %}
+<div class="container">
+  <div class="row  justify-content-center">
+    {% if prediction %}
+
+    <div class="column m-5">
+      <div class="card" style="width: 18rem;">
+
+        <div class="row">
+          <div class="col-sm-6">
+            <img class="card-img-top" src="{{away_logo}}" alt="Card image cap" width="48%">
+          </div>
+          <div class="col-sm-6 float-right">
+            <img class="card-img-top" src="{{home_logo}}" alt="Card image cap" width="48%">
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{prediction.home_team}} vs {{prediction.away_team}}</h5>
+          <p class="card-text"><strong>Home:</strong> <span style="color:blue">{{prediction.home_winning_per}}</span>
+                          |  <strong>Away:</strong> <span style="color:red">{{prediction.away_winning_per}}</span></p>
+          <p class="card-text bg-success p-3 text-white">Advice: {{prediction.advice}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- comparison pie chart -->
+    <!-- <div class="container w-auto"> -->
+      <div class="row justify-content-center">
+        <div class="m-0" id="piechart"></div>
+      </div>
+    <!-- </div> -->
+
+    <!-- <br> -->
+
+    <!-- winning percent chart -->
+    <div id="chartContainer" style="height: 300px; width: 80%;"></div>
+
+    <h3 class="pt-5 m-5">Head to Head Matches</h3>
+    <table class="table table-hover" style="width:80%;">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Home</th>
+          <th scope="col">Score</th>
+          <th scope="col">Away</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for match in matches %}
+        <tr>
+          <th scope="row">{{ match.date }}</th>
+          <td>{{match.home_team}}</td>
+          <td>{{match.home_goal}}-{{match.away_goal}}</td>
+          <td>{{match.away_team}}</td>
+          <td>{{match.status}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+    {% else %}
+    <small>No team is availabe</small>
+    {% endif %}
+    <br>
+
+
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  // Load google charts
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  var homeP = "{{prediction.home_winning_per}}";
+  var awayP = "{{prediction.away_winning_per}}";
+  homeP = homeP.substring(0, homeP.length-1);
+  awayP = awayP.substring(0, awayP.length-1);
+  var home_percent = parseInt(homeP)/10
+  var away_percent = parseInt(awayP)/10
+
+
+  // Draw the chart and set the chart values
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+    ['Team', 'Comparison percent'],
+    ["{{prediction.home_team}}", home_percent],
+    ['{{prediction.away_team}}', away_percent],
+
+    ]);
+
+    // Optional; add a title and set the width and height of the chart
+    var options = {'title':'Team Comparison ', 'width':550, 'height':400};
+
+    // Display the chart inside the <div> element with id="piechart"
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    chart.draw(data, options);
+  }
+
+
+  var homeWin = "{{prediction.home_win}}";
+  var awayWin = "{{prediction.away_win}}";
+  var drawWin = "{{prediction.draw_win}}";
+
+  homeWinPercent = homeWin.substring(0, homeWin.length-1);
+  awayWinPercent = awayWin.substring(0, awayWin.length-1);
+  drawWinPercent = drawWin.substring(0, drawWin.length-1);
+
+
+  homeWinPercent = parseInt(homeWinPercent)
+  awayWinPercent = parseInt(awayWinPercent)
+  drawWinPercent = parseInt(drawWinPercent)
+
+
+  var options = {
+    animationEnabled: true,
+    theme: "light2",
+    title: {
+      text: "Winning Percent"
+    },
+    axisY: {
+      title: "Win Rate (in %)",
+      suffix: "%",
+      includeZero: false
+    },
+    axisX: {
+      title: " "
+    },
+    data: [{
+      type: "column",
+      yValueFormatString: "#,##0.0#"%"",
+      dataPoints: [
+      { label: "{{prediction.home_team}}", y: homeWinPercent },
+      { label: "Draw", y: drawWinPercent },
+      { label: "{{prediction.away_team}}", y: awayWinPercent },
+      ]
+    }]
+  };
+  $("#chartContainer").CanvasJSChart(options);
+</script>
 
 {% endblock %}
