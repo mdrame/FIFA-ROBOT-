@@ -11,15 +11,15 @@
   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
   <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 
-  {% load staticfiles %}
+  {% load static %}
   <script src="{% static 'soccer/js/script.js' %}"></script>
 
   <title>SportBook</title>
 </head>
 <body>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="{% url 'soccer:home' %}"><i class="fas fa-fw fa-book"></i> SportBook</a>
-    <a class="navbar-brand" href="{% url 'soccer:home' %}"><i class="fas fa-fw fa-home"></i> Home</a>
+    <a class="navbar-brand" href="{% url 'soccer:index' %}"><i class="fas fa-fw fa-book"></i> SportBook</a>
+    <a class="navbar-brand" href="{% url 'soccer:index' %}"><i class="fas fa-fw fa-home"></i> Home</a>
     <form class="form-inline ml-auto">
       {% if user.is_authenticated %}
       <div class="text-white">Hello, <strong>{{user.username}}</strong>!</div>
