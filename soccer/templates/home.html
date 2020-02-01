@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row justify-content-center mb-5">
+    <h1 class="text-center">Sports</h1>
+  </div>
+</div>
+
+<div class="card-columns text-center">
+  <!-- soccer  -->
+  <div class="card" style="width: 18rem;   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);radius:10px solid;">
+    <a href="{% url 'soccer:home' %}">
+    <img class="card-img-top p-3" src="https://i.imgur.com/sQqMd54.png" alt="Card image cap" width="200px" height="auto">
+    </a>
+    <div class="card-body">
+      <a href="{% url 'soccer:home' %}"><h2 class="card-title text-center text-dark">Soccer</h2></a>
+    </div>
+  </div>
+
+  <!-- NFL  -->
+  <div class="card" style="width: 18rem; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);radius:10px solid;">
+    <a href="#">
+    <img class="card-img-top p-3" src="https://i.imgur.com/O0RfKLD.png" alt="Card image cap" width="200px" height="auto">
+    </a>
+    <div class="card-body">
+      <a href="#"><h2 class="card-title text-center text-dark">Football</h2></a>
+    </div>
+  </div>
+
+  <!-- NBA  -->
+  <div class="card" style="width: 18rem; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-radius:10px;">
+    <a href="#">
+    <img class="card-img-top p-3" src="https://i.imgur.com/lk1fSLN.png" alt="Card image cap" width="200px" height="auto">
+    </a>
+    <div class="card-body">
+      <a href="#"><h2 class="card-title text-center text-dark">Bastketball</h2></a>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}

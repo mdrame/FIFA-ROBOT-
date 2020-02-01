@@ -12,6 +12,21 @@ import os
 import pytz
 from django.urls import reverse
 
+class Index(ListView):
+
+
+
+    def get(self, request):
+        """ GET a list of Teams from API"""
+        # matches = self.get_fixtures_from_api()
+
+        return render(request, 'home.html', {
+          # 'matches': matches
+        })
+
+
+
+
 class HomePageView(ListView):
     """ Renders a list of all Teams. """
     model = Team
@@ -81,7 +96,25 @@ class HomePageView(ListView):
                 # add match to list
                 matches.append(match)
 
-        return matches
+
+        i = 10
+        tenMatches = []
+        while i > 1:
+            tenMatches.append(matches[i])
+            i -= 1
+
+
+        # limitedList =
+        return tenMatches
+
+
+
+    # create function for american football api
+    # create function for basketball api
+    # use the same keys from the soccer match dictionary
+
+
+
 
 
 
