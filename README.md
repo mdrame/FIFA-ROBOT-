@@ -1,4 +1,4 @@
-<img   src="ui/progressHud.png" width="500" align="center">
+<p align="center"><img src="ui/progressHud.png" width="500"><p>
 
 # [Sports Book Live](https://sportanalyst.herokuapp.com/)
 
